@@ -4,62 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qui est coupable?</title>
-<style>
-        body {
-            font-family: 'Creepster', cursive;
-            background: url('https://m.media-amazon.com/images/I/818LC0x2GNL._AC_UF894,1000_QL80_.jpg') no-repeat center center fixed;
-            background-size: cover;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            overflow: hidden;
+    <style>
+        /* Keyframes for animations */
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(100%);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
         }
 
-        .slide {
-            display: none;
-            text-align: center;
-            color: white;
-            width: 100%;
-            max-width: 800px;
-            animation: fadeIn 0.5s ease-in-out;
-        }
-
-        .slide.active {
-            display: block;
-        }
-
-        nav {
-            margin-top: 20px;
-        }
-
-        nav button {
-            padding: 10px 20px;
-            margin: 0 10px;
-            background-color: #7289da;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        nav button:hover {
-            background-color: #99aab5;
-        }
-
-        h1, h2, p {
-            margin: 20px 0;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            border: 3px solid white;
-            border-radius: 10px;
+        @keyframes slideOut {
+            from {
+                opacity: 1;
+                transform: translateX(0);
+            }
+            to {
+                opacity: 0;
+                transform: translateX(-100%);
+            }
         }
 
         @keyframes fadeIn {
@@ -70,74 +36,266 @@
                 opacity: 1;
             }
         }
-    </style>
 
+        @keyframes textReveal {
+            0% {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        @keyframes imagePop {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0); }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Body styling */
+        body {
+            font-family: 'Creepster', cursive; /* Scary font */
+            background: url('https://m.media-amazon.com/images/I/818LC0x2GNL._AC_UF894,1000_QL80_.jpg') no-repeat center center fixed; 
+            background-size: cover;            
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;  
+            display: flex;   
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;     
+            animation: fadeIn 1s ease; 
+            position: relative;
+        }
+
+        .light-flicker {
+            animation: flicker 1.5s infinite;
+        }
+
+        .slide {
+            width: 80%;
+            max-width: 600px;  
+            padding: 20px;
+            background: rgba(35, 39, 42, 0.85);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            animation: slideOut 0.5s forwards;
+        }
+
+        .slide.active {
+            opacity: 1;
+            animation: slideIn 0.5s forwards;
+        }
+
+        .slide img {
+            display: block;
+            margin: 20px auto;
+            max-width: 100%;
+            border-radius: 10px;
+            animation: imagePop 0.5s ease forwards;
+            opacity: 0; /* Initially hidden */
+            animation-delay: 0.5s; /* Delay to sync with text */
+            transform: scale(0.8); /* Initial size for zoom effect */
+        }
+
+        .slide.active img {
+            opacity: 1; /* Show image when slide is active */
+            animation: imagePop 0.5s ease forwards;
+        }
+
+        h1, h2, p {
+            opacity: 0; /* Initially hidden */
+            animation: textReveal 0.5s ease forwards;
+        }
+
+        h1 {
+            animation-delay: 0.2s; /* Delay for the title */
+        }
+
+        h2 {
+            animation-delay: 0.4s; /* Delay for the headings */
+        }
+
+        p {
+            animation-delay: 0.6s; /* Delay for the paragraphs */
+        }
+
+        nav {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            opacity: 0; /* Initially hidden */
+            animation: slideUp 0.5s forwards;
+            animation-delay: 1s; /* Delay for nav appearance */
+        }
+
+        nav button {
+            padding: 10px 20px;
+            margin: 0 5px;
+            background-color: #7289da;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        nav button:hover {
+            background-color: #99aab5;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            transform: translateY(-3px); /* Slide up on hover */
+        }
+
+        nav button:active {
+            transform: scale(0.9);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Loading screen styles */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(35, 39, 42, 0.9);
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; 
+            animation: fadeIn 1s ease; 
+        }
+
+        .loader {
+            margin-top: 20px;
+            border: 8px solid rgba(255, 255, 255, 0.1);
+            border-left-color: #7289da;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .text-reveal {
+            animation: textReveal 0.5s ease forwards;
+            opacity: 0; /* Initially hidden */
+        }
+
+        .active .text-reveal {
+            opacity: 1; /* Show text when slide is active */
+        }
+    </style>
 </head>
 <body>
 <div id="loading-screen">
     <h1>Chargement...</h1>
-    <p>Merci de patienter, l'enquête commence bientôt.</p>
+    <p>Veuillez patienter pendant que l'enquête se prépare.</p>
+    <div class="loader"></div>
 </div>
 
-<!-- Slides -->
 <div id="slide1" class="slide active">
-    <h1 class="light-flicker">Qui est coupable?</h1>
-    <p><strong>Rôle:</strong> Détective Jean Dupont</p>
-    <p><strong>Introduction:</strong> Lucie Martin a été retrouvée morte, apparemment tombée de la cheminée pour cacher son corps. L’atmosphère est chargée de mystère...</p>
-    <img src="fireplace.jpg" alt="Scène de crime">
+    <h1 class="text-reveal light-flicker">Qui est coupable?</h1>
+    <p class="text-reveal"><strong>Rôle:</strong> Détective Jean Dupont</p>
+    <p class="text-reveal"><strong>Introduction:</strong> Une victime, Lucie Martin, est retrouvée morte, visiblement tombée de la cheminée dans une tentative désespérée de cacher son corps. L'obscurité enveloppe le meurtre, chaque ombre racontant une histoire…</p>
+    <img src="fireplace.jpg" alt="Scène de crime" class="text-reveal">
 </div>
 
 <div id="slide2" class="slide hidden">
-    <h2 class="light-flicker">Scène de crime</h2>
-    <p>À mon arrivée, l’air était rempli d’odeurs de cendres et de mystère. Des vêtements déchirés et des traces de lutte étaient partout.</p>
-    <img src="fireplace.jpg" alt="Cendres et vêtements">
+    <h2 class="text-reveal light-flicker">Scène de crime</h2>
+    <p class="text-reveal">À mon arrivée, l'air était chargé d'une odeur de cendres brûlées et de mystère. Des morceaux de vêtements déchiquetés jonchaient le sol, témoignant d'une lutte féroce. La chemise rouge de la victime, maintenant saturée de secrets.</p>
+    <img src="fireplace.jpg" alt="Cendres et vêtements" class="text-reveal">
 </div>
 
 <div id="slide3" class="slide hidden">
-    <h2 class="light-flicker">Premières observations</h2>
-    <p>Il faisait sombre, chaque bruit semblait cacher un secret. L’odeur de brûlé planait, rendant l’atmosphère pesante.</p>
+    <h2 class="text-reveal light-flicker">Premières observations</h2>
+    <p class="text-reveal">La pièce était si sombre que chaque souffle semblait murmurer des secrets enfouis. Une odeur de brûlé flottait dans l’air, enveloppant la scène d'une atmosphère pesante et menaçante.</p>
 </div>
 
 <div id="slide4" class="slide hidden">
-    <h2 class="light-flicker">Entrevue avec un témoin</h2>
-    <p><strong>Détective Jean Dupont:</strong> Que savez-vous, Madame Leblanc?</p>
-    <p><strong>Témoin Madame Leblanc:</strong> J’ai entendu des cris et des bruits de lutte, puis une ombre a fui...</p>
+    <h2 class="text-reveal light-flicker">Entrevue avec un témoin</h2>
+    <p class="text-reveal"><strong>Détective Jean Dupont:</strong> Qu'avez-vous vu, Madame Leblanc?</p>
+    <p class="text-reveal"><strong>Témoin Madame Leblanc:</strong> J'ai entendu des cris déchirants et des bruits de lutte... une silhouette a fui dans la nuit. J'ai eu peur... L'obscurité semblait la cacher.</p>
 </div>
 
 <div id="slide5" class="slide hidden">
-    <h2 class="light-flicker">Indices trouvés</h2>
-    <p>Une empreinte sur un verre et une note brûlée près de la cheminée... Ces indices pourraient être cruciaux.</p>
+    <h2 class="text-reveal light-flicker">Indices trouvés</h2>
+    <p class="text-reveal">Une empreinte digitale glaciaire sur un verre dans la cuisine et une note brûlée scintillant près de la cheminée... ce détail pourrait être la clé d’un mystère plus profond.</p>
 </div>
 
 <div id="slide6" class="slide hidden">
-    <h2 class="light-flicker">Un nouveau témoin</h2>
-    <p><strong>Voisin Monsieur Bernard:</strong> J’ai vu quelqu’un en manteau noir entrer dans la maison, des bruits étranges résonnaient.</p>
+    <h2 class="text-reveal light-flicker">Un nouveau témoin</h2>
+    <p class="text-reveal"><strong>Voisin Monsieur Bernard:</strong> J'ai observé une silhouette en manteau noir, tremblante, entrer dans la maison. Des bruits étranges qui faisaient écho comme des hennissements ont dérangé la nuit.</p>
 </div>
 
 <div id="slide7" class="slide hidden">
-    <h2 class="light-flicker">Questionnez un suspect</h2>
-    <p>Le téléphone de Lucie a vibré avant sa mort... Qui devrait être le premier suspect ?</p>
+    <h2 class="text-reveal light-flicker">Questionnez un suspect</h2>
+    <p class="text-reveal">Le téléphone de Lucie a vibré avant qu'elle ne perde la vie, laissant une empreinte d’interrogation… Qui interroger en premier ? L’horreur est à nos portes.</p>
 </div>
 
 <div id="slide8" class="slide hidden">
-    <h2 class="light-flicker">Confrontation avec Alex</h2>
-    <p>J'ai parlé à Alex. Au début, il a nié, mais il a fini par avouer. Une dispute avec Lucie l’a poussé à agir.</p>
+    <h2 class="text-reveal light-flicker">Confrontation avec Alex</h2>
+    <p class="text-reveal">J'ai confronté Alex face à face. Au début, il a nié, son regard trahissant une peur sourde. Puis, il a avoué… La dispute était telle qu’il a voulu cacher le corps. Il a insinué que Clara l’avait poussé à agir ainsi.</p>
 </div>
 
 <div id="slide9" class="slide hidden">
-    <h2 class="light-flicker">Confrontation avec Clara</h2>
-    <p>Clara était paniquée par les accusations. "Lucie avait des problèmes avec Alex," a-t-elle dit, mais qui est vraiment coupable ?</p>
+    <h2 class="text-reveal light-flicker">Confrontation avec Clara</h2>
+    <p class="text-reveal">Clara, affolée par les accusations, se débat dans le flot d'émotions... "Lucie avait bien des problèmes avec Alex," dit-elle, mais qui est vraiment coupable dans ce jeu d'ombres ?</p>
 </div>
 
 <div id="slide10" class="slide hidden">
-    <h2 class="light-flicker">Le dénouement</h2>
-    <p>Avec les preuves, j'ai confronté les policiers. Alex a tué Lucie, envahi par la jalousie. Enfin, la vérité est révélée.</p>
+    <h2 class="text-reveal light-flicker">Le dénouement</h2>
+    <p class="text-reveal">Avec chaque preuve que j'ai trouvé, j'ai fait face aux policiers. C'était Alex qui avait ôté la vie à Lucie, consumé par la jalousie. Le suspense a finalement pris fin.</p>
 </div>
 
 <div id="slide11" class="slide hidden">
-    <h2 class="light-flicker">Réflexion finale</h2>
-    <p>Cette enquête m'a montré que l'ombre cache souvent des vérités. Grâce à des indices, nous avons rendu justice à Lucie.</p>
-    <img src="https://via.placeholder.com/600x300?text=Justice+rendue" alt="Justice rendue">
+    <h2 class="text-reveal light-flicker">Réflexion finale</h2>
+    <p class="text-reveal">Cette enquête m'a révélé que l'ombre fait souvent croître le mystère. Grâce à un oeil attentif et des indices décisifs, nous avons enfin pu résoudre l’affaire et rendre justice à Lucie.</p>
+    <img src="https://via.placeholder.com/600x300?text=Justice+rendue" alt="Justice rendue" class="text-reveal">
 </div>
 
 <nav>
@@ -150,11 +308,12 @@
     const totalSlides = 11; 
     const loadingScreen = document.getElementById('loading-screen');
 
+    // Function to hide the loading screen after a delay
     function hideLoadingScreen() {
         setTimeout(() => {
-            loadingScreen.style.display = 'none'; 
-            showSlide(currentSlide); 
-        }, 2000); 
+            loadingScreen.style.display = 'none'; // Hide loading screen
+            showSlide(currentSlide); // Show the first slide
+        }, 2000); // 2 seconds delay for demonstration
     }
 
     function showSlide(slideNumber) {
@@ -184,7 +343,9 @@
         }
     }
 
+    // Call the hideLoadingScreen function to kickstart the process
     hideLoadingScreen();
 </script>
+
 </body>
 </html>
