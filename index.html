@@ -25,12 +25,6 @@
             }
         }
 
-        @keyframes fogMove {
-            0% { transform: translateX(-10%); }
-            50% { transform: translateX(10%); }
-            100% { transform: translateX(-10%); }
-        }
-
         body {
             font-family: 'Creepster', cursive;
             background: url('https://m.media-amazon.com/images/I/818LC0x2GNL._AC_UF894,1000_QL80_.jpg') no-repeat center center fixed; 
@@ -45,18 +39,6 @@
             align-items: center;
             overflow: hidden;
             position: relative;
-        }
-
-        .fog {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://static.vecteezy.com/system/resources/thumbnails/021/514/260/small_2x/fog-smoke-design-alpha-free-png.png') repeat-x;
-            opacity: 0.6;
-            animation: fogMove 15s infinite linear;
-            pointer-events: none;
         }
 
         .slide {
@@ -109,7 +91,7 @@
     </style>
 </head>
 <body>
-    <div class="fog"></div>
+
 
     <div id="slide1" class="slide active">
     <h1 class="text-reveal light-flicker">Qui est coupable?</h1>
