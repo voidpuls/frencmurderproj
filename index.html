@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qui est coupable?</title>
     <style>
-        /* Keyframes for animations */
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -14,17 +13,6 @@
             to {
                 opacity: 1;
                 transform: translateX(0);
-            }
-        }
-
-        @keyframes slideOut {
-            from {
-                opacity: 1;
-                transform: translateX(0);
-            }
-            to {
-                opacity: 0;
-                transform: translateX(-100%);
             }
         }
 
@@ -37,81 +25,49 @@
             }
         }
 
-        @keyframes textReveal {
-            0% {
-                opacity: 0;
-                transform: translateY(50px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @keyframes fogMove {
+            0% { transform: translateX(-10%); }
+            50% { transform: translateX(10%); }
+            100% { transform: translateX(-10%); }
         }
 
-        @keyframes flicker {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.3; }
-        }
-
-        @keyframes imagePop {
-            from {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        @keyframes bounce {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-            100% { transform: translateY(0); }
-        }
-
-        @keyframes slideUp {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        /* Body styling */
         body {
-            font-family: 'Creepster', cursive; /* Scary font */
+            font-family: 'Creepster', cursive;
             background: url('https://m.media-amazon.com/images/I/818LC0x2GNL._AC_UF894,1000_QL80_.jpg') no-repeat center center fixed; 
-            background-size: cover;            
+            background-size: cover;
             color: #ffffff;
             margin: 0;
             padding: 0;
-            overflow: hidden;
             height: 100vh;  
             display: flex;   
             flex-direction: column;
             justify-content: center; 
-            align-items: center;     
-            animation: fadeIn 1s ease; 
+            align-items: center;
+            overflow: hidden;
             position: relative;
         }
 
-        .light-flicker {
-            animation: flicker 1.5s infinite;
+        .fog {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://static.vecteezy.com/system/resources/thumbnails/021/514/260/small_2x/fog-smoke-design-alpha-free-png.png') repeat-x;
+            opacity: 0.6;
+            animation: fogMove 15s infinite linear;
+            pointer-events: none;
         }
 
         .slide {
             width: 80%;
-            max-width: 600px;  
+            max-width: 600px;
             padding: 20px;
             background: rgba(35, 39, 42, 0.85);
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
             opacity: 0;
-            animation: slideOut 0.5s forwards;
+            animation: fadeIn 1s forwards;
         }
 
         .slide.active {
@@ -119,37 +75,9 @@
             animation: slideIn 0.5s forwards;
         }
 
-        .slide img {
-            display: block;
-            margin: 20px auto;
-            max-width: 100%;
-            border-radius: 10px;
-            animation: imagePop 0.5s ease forwards;
-            opacity: 0; /* Initially hidden */
-            animation-delay: 0.5s; /* Delay to sync with text */
-            transform: scale(0.8); /* Initial size for zoom effect */
-        }
-
-        .slide.active img {
-            opacity: 1; /* Show image when slide is active */
-            animation: imagePop 0.5s ease forwards;
-        }
-
         h1, h2, p {
             opacity: 0; /* Initially hidden */
-            animation: textReveal 0.5s ease forwards;
-        }
-
-        h1 {
-            animation-delay: 0.2s; /* Delay for the title */
-        }
-
-        h2 {
-            animation-delay: 0.4s; /* Delay for the headings */
-        }
-
-        p {
-            animation-delay: 0.6s; /* Delay for the paragraphs */
+            animation: fadeIn 0.5s ease forwards;
         }
 
         nav {
@@ -158,9 +86,6 @@
             left: 50%;
             transform: translateX(-50%);
             display: flex;
-            opacity: 0; /* Initially hidden */
-            animation: slideUp 0.5s forwards;
-            animation-delay: 1s; /* Delay for nav appearance */
         }
 
         nav button {
@@ -172,180 +97,107 @@
             border-radius: 5px;
             font-weight: bold;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
         }
 
         nav button:hover {
             background-color: #99aab5;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-            transform: translateY(-3px); /* Slide up on hover */
-        }
-
-        nav button:active {
-            transform: scale(0.9);
         }
 
         .hidden {
             display: none;
         }
-
-        /* Loading screen styles */
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(35, 39, 42, 0.9);
-            color: #ffffff;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000; 
-            animation: fadeIn 1s ease; 
-        }
-
-        .loader {
-            margin-top: 20px;
-            border: 8px solid rgba(255, 255, 255, 0.1);
-            border-left-color: #7289da;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        .text-reveal {
-            animation: textReveal 0.5s ease forwards;
-            opacity: 0; /* Initially hidden */
-        }
-
-        .active .text-reveal {
-            opacity: 1; /* Show text when slide is active */
-        }
     </style>
 </head>
 <body>
-<div id="loading-screen">
-    <h1>Chargement...</h1>
-    <p>Veuillez patienter pendant que l'enquête se prépare.</p>
-    <div class="loader"></div>
-</div>
+    <div class="fog"></div>
 
-<div id="slide1" class="slide active">
-    <h1 class="text-reveal light-flicker">Qui est coupable?</h1>
-    <p class="text-reveal"><strong>Rôle:</strong> Détective Jean Dupont</p>
-    <p class="text-reveal"><strong>Introduction:</strong> Une victime, Lucie Martin, est retrouvée morte, visiblement tombée de la cheminée dans une tentative désespérée de cacher son corps. L'obscurité enveloppe le meurtre, chaque ombre racontant une histoire…</p>
-    <img src="fireplace.jpg" alt="Scène de crime" class="text-reveal">
-</div>
+    <div id="slide1" class="slide active">
+        <h1>Qui est coupable?</h1>
+        <p>Introduction: Une victime, Lucie Martin...</p>
+    </div>
 
-<div id="slide2" class="slide hidden">
-    <h2 class="text-reveal light-flicker">Scène de crime</h2>
-    <p class="text-reveal">À mon arrivée, l'air était chargé d'une odeur de cendres brûlées et de mystère. Des morceaux de vêtements déchiquetés jonchaient le sol, témoignant d'une lutte féroce. La chemise rouge de la victime, maintenant saturée de secrets.</p>
-    <img src="fireplace.jpg" alt="Cendres et vêtements" class="text-reveal">
-</div>
+    <div id="slide2" class="slide hidden">
+        <h2>Scène de crime</h2>
+        <p>À mon arrivée, l'air était chargé...</p>
+    </div>
 
-<div id="slide3" class="slide hidden">
-    <h2 class="text-reveal light-flicker">Premières observations</h2>
-    <p class="text-reveal">La pièce était si sombre que chaque souffle semblait murmurer des secrets enfouis. Une odeur de brûlé flottait dans l’air, enveloppant la scène d'une atmosphère pesante et menaçante.</p>
-</div>
+    <div id="slide3" class="slide hidden">
+        <h2>Premières observations</h2>
+        <p>La pièce était si sombre que chaque souffle...</p>
+    </div>
 
-<div id="slide4" class="slide hidden">
-    <h2 class="text-reveal light-flicker">Entrevue avec un témoin</h2>
-    <p class="text-reveal"><strong>Détective Jean Dupont:</strong> Qu'avez-vous vu, Madame Leblanc?</p>
-    <p class="text-reveal"><strong>Témoin Madame Leblanc:</strong> J'ai entendu des cris déchirants et des bruits de lutte... une silhouette a fui dans la nuit. J'ai eu peur... L'obscurité semblait la cacher.</p>
-</div>
+    <div id="slide4" class="slide hidden">
+        <h2>Entrevue avec un témoin</h2>
+        <p><strong>Détective Jean Dupont:</strong>...</p>
+    </div>
 
-<div id="slide5" class="slide hidden">
-    <h2 class="text-reveal light-flicker">Indices trouvés</h2>
-    <p class="text-reveal">Une empreinte digitale glaciaire sur un verre dans la cuisine et une note brûlée scintillant près de la cheminée... ce détail pourrait être la clé d’un mystère plus profond.</p>
-</div>
+    <div id="slide5" class="slide hidden">
+        <h2>Indices trouvés</h2>
+        <p>Une empreinte digitale glaciaire sur un verre...</p>
+    </div>
 
-<div id="slide6" class="slide hidden">
-    <h2 class="text-reveal light-flicker">Un nouveau témoin</h2>
-    <p class="text-reveal"><strong>Voisin Monsieur Bernard:</strong> J'ai observé une silhouette en manteau noir, tremblante, entrer dans la maison. Des bruits étranges qui faisaient écho comme des hennissements ont dérangé la nuit.</p>
-</div>
+    <div id="slide6" class="slide hidden">
+        <h2>Un nouveau témoin</h2>
+        <p><strong>Voisin Monsieur Bernard:</strong>...</p>
+    </div>
 
-<div id="slide7" class="slide hidden">
-    <h2 class="text-reveal light-flicker">Questionnez un suspect</h2>
-    <p class="text-reveal">Le téléphone de Lucie a vibré avant qu'elle ne perde la vie, laissant une empreinte d’interrogation… Qui interroger en premier ? L’horreur est à nos portes.</p>
-</div>
+    <div id="slide7" class="slide hidden">
+        <h2>Questionnez un suspect</h2>
+        <p>Le téléphone de Lucie a vibré avant qu'elle...</p>
+    </div>
 
-<div id="slide8" class="slide hidden">
-    <h2 class="text-reveal light-flicker">Confrontation avec Alex</h2>
-    <p class="text-reveal">J'ai confronté Alex face à face. Au début, il a nié, son regard trahissant une peur sourde. Puis, il a avoué… La dispute était telle qu’il a voulu cacher le corps. Il a insinué que Clara l’avait poussé à agir ainsi.</p>
-</div>
+    <div id="slide8" class="slide hidden">
+        <h2>Confrontation avec Alex</h2>
+        <p>J'ai confronté Alex face à face...</p>
+    </div>
 
-<div id="slide9" class="slide hidden">
-    <h2 class="text-reveal light-flicker">Confrontation avec Clara</h2>
-    <p class="text-reveal">Clara, affolée par les accusations, se débat dans le flot d'émotions... "Lucie avait bien des problèmes avec Alex," dit-elle, mais qui est vraiment coupable dans ce jeu d'ombres ?</p>
-</div>
+    <div id="slide9" class="slide hidden">
+        <h2>Confrontation avec Clara</h2>
+        <p>Clara, affolée par les accusations...</p>
+    </div>
 
-<div id="slide10" class="slide hidden">
-    <h2 class="text-reveal light-flicker">Le dénouement</h2>
-    <p class="text-reveal">Avec chaque preuve que j'ai trouvé, j'ai fait face aux policiers. C'était Alex qui avait ôté la vie à Lucie, consumé par la jalousie. Le suspense a finalement pris fin.</p>
-</div>
+    <div id="slide10" class="slide hidden">
+        <h2>Le dénouement</h2>
+        <p>Avec chaque preuve que j'ai trouvé...</p>
+    </div>
 
-<div id="slide11" class="slide hidden">
-    <h2 class="text-reveal light-flicker">Réflexion finale</h2>
-    <p class="text-reveal">Cette enquête m'a révélé que l'ombre fait souvent croître le mystère. Grâce à un oeil attentif et des indices décisifs, nous avons enfin pu résoudre l’affaire et rendre justice à Lucie.</p>
-    <img src="https://via.placeholder.com/600x300?text=Justice+rendue" alt="Justice rendue" class="text-reveal">
-</div>
+    <div id="slide11" class="slide hidden">
+        <h2>Réflexion finale</h2>
+        <p>Cette enquête m'a révélé que l'ombre...</p>
+    </div>
 
-<nav>
-    <button onclick="previousSlide()">Précédent</button>
-    <button onclick="nextSlide()">Suivant</button>
-</nav>
+    <nav>
+        <button onclick="previousSlide()">Précédent</button>
+        <button onclick="nextSlide()">Suivant</button>
+    </nav>
 
-<script>
-    let currentSlide = 1;
-    const totalSlides = 11; 
-    const loadingScreen = document.getElementById('loading-screen');
+    <script>
+        let currentSlide = 1;
+        const totalSlides = 11;
 
-    // Function to hide the loading screen after a delay
-    function hideLoadingScreen() {
-        setTimeout(() => {
-            loadingScreen.style.display = 'none'; // Hide loading screen
-            showSlide(currentSlide); // Show the first slide
-        }, 2000); // 2 seconds delay for demonstration
-    }
-
-    function showSlide(slideNumber) {
-        for (let i = 1; i <= totalSlides; i++) {
-            const slide = document.getElementById(`slide${i}`);
-            if (i === slideNumber) {
-                slide.classList.add('active');
-                slide.classList.remove('hidden');
-            } else {
-                slide.classList.remove('active');
-                slide.classList.add('hidden');
+        function updateSlides() {
+            for (let i = 1; i <= totalSlides; i++) {
+                const slide = document.getElementById(`slide${i}`);
+                slide.classList.toggle('active', i === currentSlide);
+                slide.classList.toggle('hidden', i !== currentSlide);
             }
         }
-    }
 
-    function nextSlide() {
-        if (currentSlide < totalSlides) {
-            currentSlide++;
-            showSlide(currentSlide);
+        function nextSlide() {
+            if (currentSlide < totalSlides) {
+                currentSlide++;
+                updateSlides();
+            }
         }
-    }
 
-    function previousSlide() {
-        if (currentSlide > 1) {
-            currentSlide--;
-            showSlide(currentSlide);
+        function previousSlide() {
+            if (currentSlide > 1) {
+                currentSlide--;
+                updateSlides();
+            }
         }
-    }
 
-    // Call the hideLoadingScreen function to kickstart the process
-    hideLoadingScreen();
-</script>
-
+        updateSlides();
+    </script>
 </body>
 </html>
