@@ -5,95 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Qui est coupable?</title>
 <style>
-    /* Background animation */
-    @keyframes bgZoom {
-        0% { background-size: 100%; }
-        100% { background-size: 105%; }
-    }
+        body {
+            font-family: 'Creepster', cursive;
+            background: url('https://m.media-amazon.com/images/I/818LC0x2GNL._AC_UF894,1000_QL80_.jpg') no-repeat center center fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-    /* Typing animation */
-    @keyframes typing {
-        from { width: 0; }
-        to { width: 100%; }
-    }
+        .slide {
+            display: none;
+            text-align: center;
+            color: white;
+            width: 100%;
+            max-width: 800px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
 
-    @keyframes blink {
-        from, to { border-color: transparent; }
-        50% { border-color: white; }
-    }
+        .slide.active {
+            display: block;
+        }
 
-    /* Button glow effect */
-    @keyframes buttonGlow {
-        0% { box-shadow: 0 0 10px #7289da; }
-        50% { box-shadow: 0 0 20px #7289da; }
-        100% { box-shadow: 0 0 10px #7289da; }
-    }
+        nav {
+            margin-top: 20px;
+        }
 
-    body {
-        font-family: 'Creepster', cursive;
-        background: url('https://m.media-amazon.com/images/I/818LC0x2GNL._AC_UF894,1000_QL80_.jpg') no-repeat center center fixed;
-        background-size: cover;
-        animation: bgZoom 20s infinite alternate ease-in-out;
-        margin: 0;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
+        nav button {
+            padding: 10px 20px;
+            margin: 0 10px;
+            background-color: #7289da;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
 
-    nav button {
-        position: relative;
-        padding: 10px 20px;
-        margin: 0 5px;
-        background-color: #7289da;
-        color: #ffffff;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        overflow: hidden;
-        animation: buttonGlow 1.5s infinite;
-    }
+        nav button:hover {
+            background-color: #99aab5;
+        }
 
-    nav button:hover {
-        background-color: #99aab5;
-        transform: translateY(-3px);
-    }
+        h1, h2, p {
+            margin: 20px 0;
+        }
 
-    nav button::after {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        width: 0;
-        height: 0;
-        background: rgba(255, 255, 255, 0.3);
-        border-radius: 50%;
-        transform: translate(-50%, -50%);
-        opacity: 0;
-        transition: width 0.5s, height 0.5s, opacity 0.5s;
-    }
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 3px solid white;
+            border-radius: 10px;
+        }
 
-    nav button:active::after {
-        width: 200px;
-        height: 200px;
-        opacity: 0;
-        transition: width 0s, height 0s, opacity 0s;
-    }
-
-    h1, h2, p {
-        opacity: 0;
-        animation: textReveal 0.5s ease forwards;
-    }
-
-    .typing-text {
-        overflow: hidden;
-        white-space: nowrap;
-        border-right: 3px solid white;
-        width: 0;
-        animation: typing 2s steps(30, end), blink 0.5s step-end infinite;
-    }
-</style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+    </style>
 
 </head>
 <body>
